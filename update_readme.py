@@ -1,5 +1,6 @@
 import os
 import requests
+import base64
 
 def update_readme(token, repo_name, content):
     url = f"https://api.github.com/repos/{repo_name}/contents/README.md"
@@ -9,20 +10,29 @@ def update_readme(token, repo_name, content):
     
     # Fetch existing README to get its SHA
     r = requests.get(url, headers=headers)
-    sha = r.json()['sha']
+    if r.status_code != 200:
+        print(f"Failed to fetch README: {r.json()}")
+        return False
+    
+    sha = r.json().get('sha', None)
+    if sha is None:
+        print("SHA not found in the response.")
+        return False
     
     # Update README
     data = {
         "message": "Update README.md",
-        "content": content.encode('utf-8').base64encode(),
+        "content": base64.b64encode(content.encode('utf-8')).decode('utf-8'),
         "sha": sha
     }
     r = requests.put(url, headers=headers, json=data)
     return r.status_code == 200
 
 if __name__ == "__main__":
-    # GitHub token and repo name from environment variables
+    # GitHub token from environment variables
     token = os.environ.get("GH_TOKEN")
+    
+    # Your GitHub username and repo name
     repo_name = "imndevmode2023/memTest"
 
     # New content for README.md
