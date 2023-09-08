@@ -16,4 +16,4 @@ jobs:
     - name: Update README
       run: python update_readme.py
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+       GH_TOKEN: ${{ secrets.GH_TOKEN }}
