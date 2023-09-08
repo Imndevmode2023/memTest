@@ -23,7 +23,7 @@ def update_readme(token, repo_name, content):
 if __name__ == "__main__":
     # GitHub token and repo name from environment variables
     token = os.environ.get("GH_TOKEN")
-    repo_name = "memTest"
+    repo_name = "imndevmode2023/memTest"
 
     # New content for README.md
     new_content = "This is the updated content."
